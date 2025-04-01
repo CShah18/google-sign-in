@@ -14,11 +14,11 @@ app.use(express.json());
 app.use(
   cookieSession({
     name: "session",
-    keys: [process.env.SESSION_SECRET], // Encrypt session data
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-    httpOnly: true, // Prevent client-side access
-    sameSite: "lax", // Protect against CSRF
+    keys: [process.env.SESSION_SECRET],
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: true, // Must be true for cross-domain cookies
+    httpOnly: true,
+    sameSite: "none", // Important for Netlify <-> Render communication
   })
 );
 
