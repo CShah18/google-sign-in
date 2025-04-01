@@ -58,7 +58,9 @@ app.get("/auth/logout", (req, res) => {
 
 app.get("/auth/user", (req, res) => {
   if (req.user) {
-    res.json(req.user); // Send user info if logged in
+    res.json(req.user);
+  } else if (req.session) {
+    res.json(req.session);
   } else {
     res.status(401).json({ message: "Not authenticated" });
   }
