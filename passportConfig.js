@@ -11,13 +11,13 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       console.log("Google Profile:", profile);
-      done(null, { id: profile.id, displayName: profile.displayName, photos: profile.photos });
+      done(null, user);
     }
   )
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.id);
 });
 
 passport.deserializeUser((user, done) => {
