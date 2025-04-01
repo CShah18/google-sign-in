@@ -1,6 +1,6 @@
 const express = require("express");
 const passport = require("passport");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 const cors = require("cors");
 require("dotenv").config();
 require("./passportConfig"); // Import Passport configuration
@@ -10,17 +10,22 @@ const app = express();
 // Middleware
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
+
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
+  cookieSession({
+    name: "session",
+    keys: [process.env.SESSION_SECRET], // Encrypt session data
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+    httpOnly: true, // Prevent client-side access
+    sameSite: "lax", // Protect against CSRF
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Google Auth Route
+// Google Auth Routes
 app.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -36,14 +41,16 @@ app.get(
 
 // Logout
 app.get("/auth/logout", (req, res) => {
-  req.logout(() => {
-    res.redirect(process.env.CLIENT_URL);
-  });
+  req.session = null; // Clear the session cookie
+  res.redirect(process.env.CLIENT_URL);
 });
 
 app.get("/auth/user", (req, res) => {
-  console.log(req.user)
-  res.send('Success')
+  if (req.user) {
+    res.json(req.user); // Send user info if logged in
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
+  }
 });
 
 app.listen(5000, () => console.log("Server running on port 5000"));
