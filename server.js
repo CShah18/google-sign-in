@@ -16,7 +16,7 @@ app.use(
     name: "session",
     keys: [process.env.SESSION_SECRET],
     maxAge: 24 * 60 * 60 * 1000,
-    process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     sameSite: "none", // Important for Netlify <-> Render communication
   })
