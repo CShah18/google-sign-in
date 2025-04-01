@@ -1,6 +1,7 @@
 const express = require("express");
 const passport = require("passport");
-const cookieSession = require("cookie-session");
+// const cookieSession = require("cookie-session");
+const session = require("express-session");
 const cors = require("cors");
 require("dotenv").config();
 require("./passportConfig"); // Import Passport configuration
@@ -14,13 +15,15 @@ app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 
 app.use(
-  cookieSession({
-    name: "session",
-    keys: [process.env.SESSION_SECRET],
-    maxAge: 24 * 60 * 60 * 1000,
-    secure: process.env.NODE_ENV === "production",
-    httpOnly: true,
-    sameSite: "none", // Important for Netlify <-> Render communication
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      sameSite: "none",
+    },
   })
 );
 
