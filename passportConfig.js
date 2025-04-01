@@ -10,7 +10,7 @@ passport.use(
       callbackURL: "https://google-sign-in-1ydu.onrender.com/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
-      done(null, profile);
+      done(null, { id: profile.id, displayName: profile.displayName, photos: profile.photos });
     }
   )
 );

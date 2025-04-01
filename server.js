@@ -24,6 +24,13 @@ app.use(
   })
 );
 
+app.use((req, res, next) => {
+  if (!req.session) {
+    req.session = {}; // Manually create a session object if it does not exist
+  }
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
