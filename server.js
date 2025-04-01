@@ -28,9 +28,8 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  if (!req.session) {
-    req.session = {}; // Manually create a session object if it does not exist
-  }
+  console.log("Session:", req.session);
+  console.log("User:", req.user);
   next();
 });
 
