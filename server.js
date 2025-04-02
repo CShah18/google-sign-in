@@ -15,6 +15,8 @@ const mongoURI = process.env.MONGO_URI || "mongodb+srv://chiragengwebforest:v0Ha
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json());
 
+app.set("trust proxy", 1);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
