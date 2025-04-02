@@ -27,7 +27,7 @@ app.use(
       ttl: 14 * 24 * 60 * 60, // Sessions valid for 14 days
     }),
     cookie: {
-      secure: true, // Use true if you have HTTPS
+      secure: process.env.NODE_ENV === "production", // Use true if you have HTTPS
       httpOnly: true,
       sameSite: "None", // Important for cross-origin cookies
     },
@@ -36,18 +36,14 @@ app.use(
 
 app.use(passport.initialize());
 
-app.use((req, res, next) => {
-  console.log("🟠 [Before passport.session()] Session Data:", req.session);
-  next();
-});
-
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  console.log("🟢 [After passport.session()] User:", req.user);
+  console.log("🔵 Cookies Received:", req.cookies);
+  console.log("🟡 Session Data:", req.session);
+  console.log("🟢 User Data:", req.user);
   next();
 });
-
 
 // Google Auth Routes
 app.get(
