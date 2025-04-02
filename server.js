@@ -21,6 +21,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
+      dbName: "sessions",
+      collectionName: "sessions",
       mongoUrl: mongoURI, // Store session in MongoDB
       ttl: 14 * 24 * 60 * 60, // Sessions valid for 14 days
     }),
