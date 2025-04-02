@@ -1,6 +1,5 @@
 const express = require("express");
 const passport = require("passport");
-// const cookieSession = require("cookie-session");
 const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const cors = require("cors");
@@ -21,23 +20,17 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    // store: MongoStore.create({
-    //   mongoUrl: mongoURI,
-    //   collectionName: "demo-cookies",
-    // }),
-    // cookie: {
-    //   secure: process.env.NODE_ENV === "production",
-    //   httpOnly: true,
-    //   sameSite: "none",
-    // },
+    store: MongoStore.create({
+      mongoUrl: mongoURI, // Store session in MongoDB
+      ttl: 14 * 24 * 60 * 60, // Sessions valid for 14 days
+    }),
+    cookie: {
+      secure: true, // Use true if you have HTTPS
+      httpOnly: true,
+      sameSite: "None", // Important for cross-origin cookies
+    },
   })
 );
-
-// app.use((req, res, next) => {
-//   console.log("Session:", req.session);
-//   console.log("User:", req.user);
-//   next();
-// });
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,10 +56,12 @@ app.get("/auth/logout", (req, res) => {
 });
 
 app.get("/auth/user", (req, res) => {
+  console.log("Session ID:", req.sessionID);
+  console.log("Session Data:", req.session);
+  console.log("User Data:", req.user);
+
   if (req.user) {
     res.json(req.user);
-  } else if (req.session) {
-    res.json(req.session);
   } else {
     res.status(401).json({ message: "Not authenticated" });
   }
