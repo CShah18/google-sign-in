@@ -33,7 +33,19 @@ app.use(
 );
 
 app.use(passport.initialize());
+
+app.use((req, res, next) => {
+  console.log("🟠 [Before passport.session()] Session Data:", req.session);
+  next();
+});
+
 app.use(passport.session());
+
+app.use((req, res, next) => {
+  console.log("🟢 [After passport.session()] User:", req.user);
+  next();
+});
+
 
 // Google Auth Routes
 app.get(

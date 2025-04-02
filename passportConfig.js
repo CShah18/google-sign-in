@@ -18,12 +18,12 @@ passport.use(
 
 // ✅ Store entire user profile in session
 passport.serializeUser((user, done) => {
-  console.log("Serialized User:", user);
+  console.log("🟢 Serialized User:", user);
   done(null, user);
 });
 
 // ✅ Retrieve full user from session
 passport.deserializeUser((user, done) => {
-  console.log("Deserialized User:", user);
+  console.log("🟢 Deserialized User:", user);
   done(null, user);
 });
