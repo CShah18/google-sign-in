@@ -16,10 +16,12 @@ passport.use(
   )
 );
 
+// ✅ Store entire user profile in session
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user);
 });
 
+// ✅ Retrieve full user from session
 passport.deserializeUser((user, done) => {
-  done(null, { id });
+  done(null, user);
 });
