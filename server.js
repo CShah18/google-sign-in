@@ -9,7 +9,7 @@ require("./passportConfig"); // Import Passport configuration
 const app = express();
 
 const port = process.env.PORT || 5000;
-const mongoURI = process.env.MONGO_URI || "mongodb+srv://chiragengwebforest:v0HaPCWg9Q7TEB3W@cluster0.ptma4ix.mongodb.net/demo-cookies?retryWrites=true&w=majority&appName=Cluster0";
+const mongoURI = process.env.MONGO_URI || "mongodb+srv://chiragengwebforest:v0HaPCWg9Q7TEB3W@cluster0.ptma4ix.mongodb.net/sessions?retryWrites=true&w=majority&appName=Cluster0";
 
 // Middleware
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
