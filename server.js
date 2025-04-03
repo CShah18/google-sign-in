@@ -53,13 +53,19 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: `${process.env.CLIENT_URL}/Dashboard`,
-    failureRedirect: "/login/failed",
-  })
-);
+// app.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: `${process.env.CLIENT_URL}/Dashboard`,
+//     failureRedirect: "/login/failed",
+//   })
+// );
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect(`${process.env.CLIENT_URL}/Dashboard`);
+  });
 
 // Logout
 app.get("/auth/logout", (req, res) => {
